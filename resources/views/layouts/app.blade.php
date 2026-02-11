@@ -25,10 +25,6 @@
                             <a href="{{ route('metals') }}" class="px-3 py-2 rounded-md text-sm font-medium {{ request()->routeIs('metals') ? 'bg-blue-100 text-blue-800' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100' }}">Metals</a>
                         </div>
                     </div>
-                    <div class="hidden sm:flex items-center gap-2">
-                        <a href="#" class="inline-flex items-center rounded-md border border-slate-300 bg-white px-3 py-2 text-sm font-medium text-slate-700 shadow-sm hover:bg-slate-50">New Deposit</a>
-                        <a href="#" class="inline-flex items-center rounded-md bg-blue-600 px-3 py-2 text-sm font-medium text-white shadow-sm hover:bg-blue-700">New Withdrawal</a>
-                    </div>
                 </div>
             </div>
         </nav>
