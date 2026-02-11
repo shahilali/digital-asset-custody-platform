@@ -19,6 +19,11 @@ class Metal extends Model
         return $this->hasOne(MetalPrice::class);
     }
 
+    public function metalPrices()
+    {
+        return $this->hasMany(MetalPrice::class);
+    }
+
     public function deposits()
     {
         return $this->hasMany(Deposit::class);
