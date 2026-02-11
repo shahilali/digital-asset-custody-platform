@@ -21,9 +21,8 @@
                             <span class="text-lg font-semibold text-slate-900 group-hover:text-slate-700">Digital Asset Custody</span>
                         </a>
                         <div class="hidden sm:flex sm:items-center sm:gap-1">
-
+                            <a href="{{ route('dashboard') }}" class="px-3 py-2 rounded-md text-sm font-medium {{ request()->routeIs('dashboard') ? 'bg-blue-100 text-blue-800' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100' }}">Accounts</a>
                             <a href="{{ route('metals') }}" class="px-3 py-2 rounded-md text-sm font-medium {{ request()->routeIs('metals') ? 'bg-blue-100 text-blue-800' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100' }}">Metals</a>
-
                         </div>
                     </div>
                     <div class="hidden sm:flex items-center gap-2">
