@@ -22,6 +22,7 @@
                         </a>
                         <div class="hidden sm:flex sm:items-center sm:gap-1">
                             <a href="{{ route('dashboard') }}" class="px-3 py-2 rounded-md text-sm font-medium {{ request()->routeIs('dashboard') ? 'bg-blue-100 text-blue-800' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100' }}">Accounts</a>
+                            <a href="{{ route('deposits') }}" class="px-3 py-2 rounded-md text-sm font-medium {{ request()->routeIs('deposits') ? 'bg-blue-100 text-blue-800' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100' }}">Deposits</a>
                             <a href="{{ route('metals') }}" class="px-3 py-2 rounded-md text-sm font-medium {{ request()->routeIs('metals') ? 'bg-blue-100 text-blue-800' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100' }}">Metals</a>
                         </div>
                     </div>
