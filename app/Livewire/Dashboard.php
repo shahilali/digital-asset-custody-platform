@@ -20,9 +20,6 @@ class Dashboard extends Component
     public $customer_name = '';
     public $account_type = 'retail';
 
-    public $showViewModal = false;
-    public $selectedAccount = null;
-
     public $showDepositModal = false;
     public $depositAccountId = null;
     public $depositAccount = null;
@@ -74,19 +71,6 @@ class Dashboard extends Component
         session()->flash('message', 'Account created successfully.');
         $this->closeAccountModal();
         $this->resetPage();
-    }
-
-    public function viewAccount($accountId)
-    {
-        $this->selectedAccount = Account::with(['deposits.metal', 'withdrawals.metal', 'allocatedBars.metal'])
-            ->findOrFail($accountId);
-        $this->showViewModal = true;
-    }
-
-    public function closeViewModal()
-    {
-        $this->showViewModal = false;
-        $this->selectedAccount = null;
     }
 
     public function openDepositModal($accountId)
