@@ -51,7 +51,7 @@ class WithdrawalService
         }
 
         return Withdrawal::create([
-            'withdrawal_number' => 'WD-' . Str::uuid(),
+            'withdrawal_number' => 'WD-' . uniqid(),
             'account_id' => $accountId,
             'metal_id' => $metalId,
             'quantity_kg' => $quantityKg,

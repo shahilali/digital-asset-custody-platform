@@ -7,6 +7,8 @@ use App\Models\Account;
 use App\Models\Metal;
 use App\Models\Deposit;
 use App\Services\DepositService;
+use App\Services\WithdrawalService;
+use App\Services\BalanceService;
 use Livewire\WithPagination;
 
 class Dashboard extends Component
@@ -29,6 +31,15 @@ class Dashboard extends Component
     public $quantity_kg = '';
     public $serial_numbers = '';
     public $existingStorageType = null;
+
+    public $showWithdrawalModal = false;
+    public $withdrawalAccountId = null;
+    public $withdrawalAccount = null;
+    public $withdrawal_metal_id = '';
+    public $withdrawal_quantity_kg = '';
+    public $selectedBarIds = [];
+    public $availableBars = [];
+    public $balanceKg = 0;
 
     public function updatingSearch()
     {
@@ -186,6 +197,85 @@ class Dashboard extends Component
 
             session()->flash('message', "Deposit {$deposit->deposit_number} created successfully.");
             $this->closeDepositModal();
+        } catch (\Exception $e) {
+            session()->flash('error', $e->getMessage());
+        }
+    }
+
+    public function openWithdrawalModal($accountId)
+    {
+        $account = Account::findOrFail($accountId);
+
+        $this->withdrawalAccountId = $accountId;
+        $this->withdrawalAccount = $account;
+        $this->showWithdrawalModal = true;
+        $this->withdrawal_metal_id = '';
+        $this->withdrawal_quantity_kg = '';
+        $this->selectedBarIds = [];
+        $this->availableBars = [];
+        $this->balanceKg = 0;
+    }
+
+    public function updatedWithdrawalMetalId(BalanceService $balanceService)
+    {
+        if (!$this->withdrawalAccount || !$this->withdrawal_metal_id) {
+            return;
+        }
+
+        if ($this->withdrawalAccount->account_type === 'retail') {
+            $this->balanceKg = $balanceService->unallocatedBalanceKg(
+                $this->withdrawalAccountId,
+                $this->withdrawal_metal_id
+            );
+        } else {
+            $this->availableBars = $balanceService->allocatedBars(
+                $this->withdrawalAccountId,
+                $this->withdrawal_metal_id
+            );
+        }
+    }
+
+    public function closeWithdrawalModal()
+    {
+        $this->showWithdrawalModal = false;
+        $this->reset(['withdrawalAccountId', 'withdrawalAccount', 'withdrawal_metal_id', 'withdrawal_quantity_kg', 'selectedBarIds', 'availableBars', 'balanceKg']);
+    }
+
+    public function saveWithdrawal(WithdrawalService $withdrawalService)
+    {
+        try {
+            if ($this->withdrawalAccount->account_type === 'retail') {
+                $this->validate([
+                    'withdrawalAccountId' => 'required|integer|exists:accounts,id',
+                    'withdrawal_metal_id' => 'required|integer|exists:metals,id',
+                    'withdrawal_quantity_kg' => 'required|numeric|min:0.001',
+                ]);
+
+                $withdrawal = $withdrawalService->createUnallocated(
+                    $this->withdrawalAccountId,
+                    $this->withdrawal_metal_id,
+                    $this->withdrawal_quantity_kg
+                );
+
+                session()->flash('message', "Withdrawal {$withdrawal->withdrawal_number} created successfully.");
+            } else {
+                $this->validate([
+                    'withdrawalAccountId' => 'required|integer|exists:accounts,id',
+                    'withdrawal_metal_id' => 'required|integer|exists:metals,id',
+                    'selectedBarIds' => 'required|array|min:1',
+                ]);
+
+                $withdrawals = $withdrawalService->createAllocated(
+                    $this->withdrawalAccountId,
+                    $this->withdrawal_metal_id,
+                    $this->selectedBarIds
+                );
+
+                $count = count($withdrawals);
+                session()->flash('message', "{$count} withdrawal(s) created successfully.");
+            }
+
+            $this->closeWithdrawalModal();
         } catch (\Exception $e) {
             session()->flash('error', $e->getMessage());
         }
