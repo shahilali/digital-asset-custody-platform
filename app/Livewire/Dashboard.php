@@ -71,7 +71,7 @@ class Dashboard extends Component
         $accounts = Account::query()
             ->when($this->search, function($query) {
                 $query->where('customer_name', 'like', '%' . $this->search . '%')
-                      ->orWhere('account_number', 'like', '%' . $this->search . '%');
+                    ->orWhere('account_number', 'like', '%' . $this->search . '%');
             })
             ->orderBy('created_at', 'desc')
             ->paginate(15);
