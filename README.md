@@ -54,14 +54,14 @@ This system provides a minimal but complete prototype for a digital asset custod
 ┌─────────────┐         ┌─────────────┐         ┌─────────────┐
 │  accounts   │         │   metals    │         │metal_prices │
 ├─────────────┤         ├─────────────┤         ├─────────────┤
-│ id          │         │ id          │         │ id          │
+│ id          │         │ id          │_________│ id          │
 │ account_no  │         │ name        │         │ metal_id    │
 │ customer    │         │ symbol      │         │ price_per_kg│
 │ type        │         └──────┬──────┘         │ created_at  │
 └──────┬──────┘                │                └─────────────┘
        │                       │
        │    ┌──────────────────┴──────────────────┐
-       │    │                                      │
+       │    │                                     │
        ├────▼──────────┐                  ┌───────▼────────┐
        │   deposits    │                  │  withdrawals   │
        ├───────────────┤                  ├────────────────┤
