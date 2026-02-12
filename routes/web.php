@@ -21,3 +21,5 @@ Route::get('/deposits', Deposits::class)->name('deposits');
 Route::get('/withdrawals', Withdrawals::class)->name('withdrawals');
 
 Route::get('/metals', MetalManager::class)->name('metals');
+
+Route::get('/metals/{id}/price-history', MetalPriceHistory::class)->name('metals.price-history');
